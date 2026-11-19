@@ -1,0 +1,206 @@
+{
+  "settings": {
+    "n_samples": 60,
+    "length": 1024,
+    "temperature": 0.95,
+    "top_p": 0.95,
+    "listening_clips": 5,
+    "seq_len": 1024
+  },
+  "training": {
+    "lstm": {
+      "epochs": 10,
+      "best_epoch": 10,
+      "best_val_loss": 0.7606,
+      "final_train_loss": 0.7118,
+      "final_val_loss": 0.7606,
+      "gap_val_minus_train": 0.048800000000000066,
+      "last3_val": [
+        0.7646,
+        0.7613,
+        0.7606
+      ],
+      "still_improving": false
+    },
+    "transformer": {
+      "epochs": 10,
+      "best_epoch": 10,
+      "best_val_loss": 0.5644,
+      "final_train_loss": 0.5632,
+      "final_val_loss": 0.5644,
+      "gap_val_minus_train": 0.0011999999999999789,
+      "last3_val": [
+        0.5701,
+        0.5663,
+        0.5644
+      ],
+      "still_improving": true
+    }
+  },
+  "models": {
+    "lstm": {
+      "n": 60,
+      "inst_exact": "80% (95% CI 68-88%)",
+      "density_acc": "53% (95% CI 41-65%)",
+      "density_within_1_bin": "90% (95% CI 80-95%)",
+      "density_mae_bins": 0.5833333333333334,
+      "per_instrument": {
+        "drums": {
+          "requested": 58,
+          "played": 57,
+          "played_when_not_requested": 0,
+          "not_requested": 2
+        },
+        "piano": {
+          "requested": 38,
+          "played": 34,
+          "played_when_not_requested": 0,
+          "not_requested": 22
+        },
+        "guitar": {
+          "requested": 43,
+          "played": 41,
+          "played_when_not_requested": 0,
+          "not_requested": 17
+        },
+        "bass": {
+          "requested": 54,
+          "played": 53,
+          "played_when_not_requested": 0,
+          "not_requested": 6
+        },
+        "strings": {
+          "requested": 36,
+          "played": 32,
+          "played_when_not_requested": 0,
+          "not_requested": 24
+        }
+      },
+      "quality": {
+        "notes_per_bar": [
+          42.72715627359397,
+          18.325052671425922
+        ],
+        "n_bars": [
+          6.983333333333333,
+          3.792499908445029
+        ],
+        "key_corr": [
+          0.8190521861956663,
+          0.0932238870690762
+        ],
+        "in_key": [
+          0.9709323019388878,
+          0.050727542049144037
+        ],
+        "bar_repeat": [
+          0.006666666666666667,
+          0.051207638319124074
+        ],
+        "empty_bars": [
+          0.0,
+          0.0
+        ]
+      },
+      "train_bar_overlap": 0.0,
+      "bars_checked": 398
+    },
+    "transformer": {
+      "n": 60,
+      "inst_exact": "78% (95% CI 66-87%)",
+      "density_acc": "57% (95% CI 44-68%)",
+      "density_within_1_bin": "95% (95% CI 86-98%)",
+      "density_mae_bins": 0.48333333333333334,
+      "per_instrument": {
+        "drums": {
+          "requested": 58,
+          "played": 58,
+          "played_when_not_requested": 0,
+          "not_requested": 2
+        },
+        "piano": {
+          "requested": 38,
+          "played": 33,
+          "played_when_not_requested": 0,
+          "not_requested": 22
+        },
+        "guitar": {
+          "requested": 43,
+          "played": 38,
+          "played_when_not_requested": 0,
+          "not_requested": 17
+        },
+        "bass": {
+          "requested": 54,
+          "played": 54,
+          "played_when_not_requested": 0,
+          "not_requested": 6
+        },
+        "strings": {
+          "requested": 36,
+          "played": 33,
+          "played_when_not_requested": 0,
+          "not_requested": 24
+        }
+      },
+      "quality": {
+        "notes_per_bar": [
+          46.697396816146814,
+          22.652926367470993
+        ],
+        "n_bars": [
+          6.266666666666667,
+          2.8217409913424407
+        ],
+        "key_corr": [
+          0.8005833467854738,
+          0.08339993504837818
+        ],
+        "in_key": [
+          0.9641841780056157,
+          0.0716242747374255
+        ],
+        "bar_repeat": [
+          0.13571849606332365,
+          0.2014603102599576
+        ],
+        "empty_bars": [
+          0.0,
+          0.0
+        ]
+      },
+      "train_bar_overlap": 0.0,
+      "bars_checked": 366
+    }
+  },
+  "real_baseline": {
+    "notes_per_bar": [
+      39.63307299182299,
+      16.10922781104579
+    ],
+    "n_bars": [
+      6.916666666666667,
+      2.7585724971844083
+    ],
+    "key_corr": [
+      0.8279788428084084,
+      0.1270308803513386
+    ],
+    "in_key": [
+      0.9385991460395828,
+      0.09153839406769695
+    ],
+    "bar_repeat": [
+      0.03767195767195767,
+      0.1265657348952436
+    ],
+    "empty_bars": [
+      0.0,
+      0.0
+    ],
+    "train_bar_overlap": [
+      0.027989821882951654,
+      null
+    ]
+  }
+}

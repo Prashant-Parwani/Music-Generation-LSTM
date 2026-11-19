@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Environments
+.venv/
+venv/
+env/
+ENV/
+
+# Large Datasets & Media Files
+data/
+*.wav
+*.mp3
+
+# Ignore all loose midi files, except sample results
+*.mid
+*.midi
+!results/**/*.mid
+
+# Model Checkpoints (weights can be large)
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+*.bin
+
+# Output & Experiments
+out/
+*.log
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

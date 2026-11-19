@@ -1,0 +1,10 @@
+numpy
+pandas
+tqdm
+matplotlib
+scipy
+pretty_midi
+miditok
+symusic
+torch
+gradio
