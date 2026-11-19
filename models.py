@@ -15,7 +15,7 @@ from common import CTX_LEN, PREFIX_LEN
 
 # ----------------------------------------------------------------------------
 class LSTMLM(nn.Module):
-    def __init__(self, vocab_size, emb=256, hidden=512, layers=3, dropout=0.2, use_ctx=True):
+    def __init__(self, vocab_size, emb=256, hidden=768, layers=3, dropout=0.2, use_ctx=True):
         super().__init__()
         self.config = dict(vocab_size=vocab_size, emb=emb, hidden=hidden, layers=layers,
                            dropout=dropout, use_ctx=use_ctx)
@@ -67,7 +67,7 @@ class Block(nn.Module):
 
 
 class TransformerLM(nn.Module):
-    def __init__(self, vocab_size, d_model=384, n_layers=6, n_heads=6, max_len=1024, dropout=0.1):
+    def __init__(self, vocab_size, d_model=512, n_layers=8, n_heads=8, max_len=1024, dropout=0.1):
         super().__init__()
         self.config = dict(vocab_size=vocab_size, d_model=d_model, n_layers=n_layers,
                            n_heads=n_heads, max_len=max_len, dropout=dropout)

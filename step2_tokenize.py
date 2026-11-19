@@ -43,7 +43,7 @@ def _tokenize(args):
             return None
         seq = _tok(score)
         seq = seq[0] if isinstance(seq, list) else seq
-        ids = np.asarray(seq.ids, dtype=np.int16)
+        ids = np.asarray(seq.ids, dtype=np.int32)
         return path, ids, float(tempo)
     except Exception:
         return None

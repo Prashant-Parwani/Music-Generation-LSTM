@@ -29,7 +29,8 @@ def compute_loss(model, x, pad_id):
     tgt[:, :PREFIX_LEN - 1] = -100
     tgt[tgt == pad_id] = -100
     logits = model(inp)
-    return F.cross_entropy(logits.reshape(-1, logits.size(-1)).float(), tgt.reshape(-1), ignore_index=-100)
+    return F.cross_entropy(logits.reshape(-1, logits.size(-1)).float(), tgt.reshape(-1),
+                           ignore_index=-100, label_smoothing=0.1)
 
 
 @torch.no_grad()
@@ -48,13 +49,13 @@ def evaluate_loss(model, loader, pad_id, device, max_batches=None):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", choices=["lstm", "transformer"], required=True)
-    ap.add_argument("--epochs", type=int, default=20)
+    ap.add_argument("--epochs", type=int, default=60)
     ap.add_argument("--batch-size", type=int, default=16)
     ap.add_argument("--seq-len", type=int, default=1024)
     ap.add_argument("--crops-per-song", type=int, default=8, help="random crops per song per epoch")
     ap.add_argument("--lr", type=float, default=None, help="default: 3e-4 transformer, 2e-3 lstm")
     ap.add_argument("--weight-decay", type=float, default=0.01)
-    ap.add_argument("--patience", type=int, default=5, help="early stopping on val loss")
+    ap.add_argument("--patience", type=int, default=10, help="early stopping on val loss")
     ap.add_argument("--workers", type=int, default=2)
     ap.add_argument("--max-train-batches", type=int, default=None, help="debug: cap batches per epoch")
     ap.add_argument("--no-ctx", action="store_true", help="LSTM only: disable per-step control vector")
@@ -91,7 +92,7 @@ def main():
     warmup = max(1, int(0.05 * total_steps))
     sched = torch.optim.lr_scheduler.LambdaLR(
         opt, lambda s: (s + 1) / warmup if s < warmup
-        else 0.5 * (1 + math.cos(math.pi * (s - warmup) / max(1, total_steps - warmup))) * 0.95 + 0.05)
+        else 0.5 * (1 + math.cos(math.pi * (s - warmup) / max(1, total_steps - warmup))) * 0.98 + 0.02)
 
     use_amp = device == "cuda"
     amp_dtype = torch.bfloat16 if use_amp and torch.cuda.is_bf16_supported() else torch.float16

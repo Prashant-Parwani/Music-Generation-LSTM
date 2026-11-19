@@ -42,13 +42,13 @@ DEDUPE_VERSIONS = True       # Clean MIDI has "Song.mid", "Song.1.mid"... keep o
 # --- Step 2 tokenization ------------------------------------------------
 # REMI with Program tokens, one token stream for all instruments.
 TOKENIZER_KWARGS = dict(
-    num_velocities=8,
+    num_velocities=16,
     use_tempos=True, num_tempos=16, tempo_range=(50, 200),
     use_programs=True, programs=[-1, 0, 25, 33, 48],   # drums, piano, guitar, bass, strings
     one_token_stream_for_programs=True,
     use_time_signatures=False,
     use_chords=False,
-    beat_res={(0, 4): 4, (4, 12): 2},                  # 16th-note grid
+    beat_res={(0, 4): 4, (4, 12): 4},                  # uniform 16th-note grid
 )
 MIN_TOKENS_PER_SONG = 600
 SPLIT_FRACTIONS = (0.90, 0.05, 0.05)   # train / val / test, split BY ARTIST to avoid leakage
