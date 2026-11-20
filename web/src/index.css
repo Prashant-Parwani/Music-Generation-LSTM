@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+:root { color-scheme: dark; }
+html, body, #root { min-height: 100%; }
+body {
+  margin: 0;
+  background: #0b0b17;
+  color: #e7e7f4;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* soft aurora background */
+.aurora::before {
+  content: "";
+  position: fixed; inset: 0; z-index: -1;
+  background:
+    radial-gradient(600px 400px at 15% 5%, rgba(99, 102, 241, 0.28), transparent 60%),
+    radial-gradient(500px 380px at 85% 10%, rgba(217, 70, 239, 0.22), transparent 60%),
+    radial-gradient(700px 500px at 50% 100%, rgba(14, 165, 233, 0.14), transparent 60%);
+}
+
+.glass { background: rgba(255, 255, 255, 0.045); border: 1px solid rgba(255, 255, 255, 0.09); backdrop-filter: blur(10px); }
+
+/* range sliders */
+input[type="range"] { -webkit-appearance: none; appearance: none; height: 6px; border-radius: 999px; background: rgba(255,255,255,0.14); outline: none; width: 100%; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 999px; background: linear-gradient(135deg,#818cf8,#e879f9); cursor: pointer; border: 2px solid #0b0b17; }
+input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 999px; background: #a78bfa; cursor: pointer; border: 2px solid #0b0b17; }
+input[type="range"]:focus-visible { box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.5); }
+
+@keyframes shimmer { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+.shimmer { background-size: 200% 100%; animation: shimmer 1.6s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .shimmer { animation: none; } }

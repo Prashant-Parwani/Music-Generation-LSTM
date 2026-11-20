@@ -60,5 +60,5 @@ N_DENS_BINS = 4                        # density = note events per bar, quartile
 MIN_NOTES_FOR_ON = 4                   # a group is "ON" in a crop if it has >= this many notes
 
 # --- Misc ---------------------------------------------------------------
-NUM_WORKERS = None           # None = use all CPU cores
+NUM_WORKERS = 2              # limit parallel processes to avoid Windows paging file errors
 SEED = 42

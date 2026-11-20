@@ -2,8 +2,8 @@
 Run the whole pipeline with one command.
 
     python run_all.py                       # everything, default settings
-    python run_all.py --epochs 30           # longer training
-    python run_all.py --skip step1 step2    # reuse earlier outputs
+    python run_all.py --skip step1 step2    # reuse earlier tokenized data (most common)
+    python run_all.py --skip step1          # reuse step1 manifest, re-tokenize and train
     python run_all.py --smoke               # tiny/fast end-to-end test (a few minutes)
 """
 import argparse
@@ -22,8 +22,8 @@ def run(cmd):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--epochs", type=int, default=20)
-    ap.add_argument("--batch-size", type=int, default=16)
+    ap.add_argument("--epochs", type=int, default=32)
+    ap.add_argument("--batch-size", type=int, default=8)
     ap.add_argument("--seq-len", type=int, default=1024)
     ap.add_argument("--skip", nargs="*", default=[],
                     choices=["step1", "step2", "lstm", "transformer", "evaluate"])

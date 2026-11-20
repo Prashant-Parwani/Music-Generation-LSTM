@@ -32,11 +32,9 @@ def _sample(logits, banned, temperature, top_k, top_p, recent_ids=None, rep_pena
     logits[banned] = float("-inf")
     # Repetition penalty: discourage tokens recently generated
     if recent_ids is not None and rep_penalty > 1.0:
-        for tid in set(recent_ids):
-            if logits[tid] > 0:
-                logits[tid] /= rep_penalty
-            else:
-                logits[tid] *= rep_penalty
+        ids = torch.tensor(sorted(set(recent_ids)), device=logits.device)
+        vals = logits[ids]
+        logits[ids] = torch.where(vals > 0, vals / rep_penalty, vals * rep_penalty)
     logits = logits / max(temperature, 1e-5)
     if top_k and top_k > 0:
         kth = torch.topk(logits, min(top_k, logits.numel())).values[-1]
@@ -54,8 +52,9 @@ def _sample(logits, banned, temperature, top_k, top_p, recent_ids=None, rep_pena
 @torch.no_grad()
 def generate_ids(model, model_type, spec: ControlSpec, tempo_bin, dens_bin, groups, n_tokens=1024,
                  temperature=0.90, top_k=0, top_p=0.92, hard_instruments=False, device="cpu", seed=None,
-                 rep_penalty=1.15, rep_window=64):
-    """Returns the generated MUSIC token ids (control prefix removed). Starts with a Bar token."""
+                 rep_penalty=1.0, rep_window=64, progress_cb=None):
+    """Returns the generated MUSIC token ids (control prefix removed). Starts with a Bar token.
+    progress_cb(done_tokens, total_tokens) is called every 16 tokens (used by the web server)."""
     if seed is not None:
         torch.manual_seed(seed)
     flags = [g in groups for g in C.ALL_GROUPS]
@@ -75,6 +74,8 @@ def generate_ids(model, model_type, spec: ControlSpec, tempo_bin, dens_bin, grou
             recent = out[-rep_window:] if rep_window else None
             nxt = _sample(logits[0, -1], banned, temperature, top_k, top_p, recent, rep_penalty)
             out.append(nxt)
+            if progress_cb and len(out) % 16 == 0:
+                progress_cb(len(out), n_tokens)
             logits, hidden, ctx = model.step(torch.tensor([[nxt]], device=device), hidden, ctx)
     else:
         seq = list(prefix)
@@ -85,6 +86,8 @@ def generate_ids(model, model_type, spec: ControlSpec, tempo_bin, dens_bin, grou
             recent = out[-rep_window:] if rep_window else None
             nxt = _sample(logits, banned, temperature, top_k, top_p, recent, rep_penalty)
             seq.append(nxt); out.append(nxt)
+            if progress_cb and len(out) % 16 == 0:
+                progress_cb(len(out), n_tokens)
     return out
 
 
@@ -99,7 +102,7 @@ def main():
     ap.add_argument("--top-k", type=int, default=50)
     ap.add_argument("--top-p", type=float, default=0.92)
     ap.add_argument("--hard-instruments", action="store_true")
-    ap.add_argument("--rep-penalty", type=float, default=1.15, help="repetition penalty factor (1.0 = off)")
+    ap.add_argument("--rep-penalty", type=float, default=1.0, help="repetition penalty factor (1.0 = off; values > 1 can break note structure)")
     ap.add_argument("--rep-window", type=int, default=64, help="look-back window for repetition penalty")
     ap.add_argument("--seed", type=int, default=None)
     ap.add_argument("--out", default="out/generated.mid")
